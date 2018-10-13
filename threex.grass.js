@@ -29,7 +29,8 @@ THREEx.createGrassTufts	= function(positions){
 			var object3d	= new THREE.Mesh(geometry, material)
 			object3d.rotateY(angle)
 			object3d.position.copy(position)
-			THREE.GeometryUtils.merge( mergedGeo, object3d );
+			object3d.updateMatrix();
+			mergedGeo.merge( object3d.geometry, object3d.matrix );
 
 			// The other side of the plane
 			// - impossible to use ```side : THREE.BothSide``` as 
@@ -37,13 +38,15 @@ THREEx.createGrassTufts	= function(positions){
 			var object3d	= new THREE.Mesh(geometry, material)
 			object3d.rotateY(angle+Math.PI)
 			object3d.position.copy(position)
-			THREE.GeometryUtils.merge( mergedGeo, object3d );
+			object3d.updateMatrix();
+			mergedGeo.merge( object3d.geometry, object3d.matrix );
 		}
 	}
 
 
 	// load the texture
 	var textureUrl	= THREEx.createGrassTufts.baseUrl+'images/grass01.png'
+	THREE.ImageUtils.crossOrigin = '';
 	var texture	= THREE.ImageUtils.loadTexture(textureUrl)
 	// build the material
 	var material	= new THREE.MeshPhongMaterial({
